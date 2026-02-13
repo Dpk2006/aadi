@@ -1,0 +1,28 @@
+#registration
+curl -X POST \
+"http://127.0.0.1:8000/api/v1/devices/register?device_id=device_001&device_name=panel_1&category=electrical&branch_id=branch_demo"
+## this should return you an API key for your device
+
+
+##sending payload
+
+curl -X POST \
+"http://127.0.0.1:8000/api/v1/logs/electrical/panel_1?app_id=env_monitor" \
+-H "Content-Type: application/json" \
+-H "X-API-Key: sk_device_xxxxx" \
+-d '{
+  "data": {
+    "voltage": 230.4,
+    "current": 4,
+    "battery": 90,
+    "moisture": 10,
+    "light": 1
+  }
+}'
+
+## view recent 
+db.logs.find().sort({ timestamp: -1 }).limit(10).pretty()
+
+
+## server start
+python -m uvicorn app.main:app --reload 

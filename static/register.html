@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Device Registration - IoT Platform</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            max-width: 600px;
+            width: 100%;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #667eea;
+            font-size: 2rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.1rem;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        input:focus,
+        select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 14px 32px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .result {
+            margin-top: 30px;
+            padding: 20px;
+            border-radius: 10px;
+            background: #f0f9ff;
+            border: 2px solid #0ea5e9;
+            display: none;
+        }
+
+        .result.show {
+            display: block;
+        }
+
+        .result h3 {
+            color: #0369a1;
+            margin-bottom: 15px;
+        }
+
+        .api-key {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 0.9rem;
+            word-break: break-all;
+            margin: 10px 0;
+            border: 1px solid #bae6fd;
+        }
+
+        .warning {
+            background: #fef3c7;
+            border: 2px solid #f59e0b;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            color: #92400e;
+            font-weight: 500;
+        }
+
+        .info-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .info-item:last-child {
+            border-bottom: none;
+        }
+
+        .info-label {
+            font-weight: 600;
+            color: #666;
+        }
+
+        .info-value {
+            color: #333;
+            font-family: monospace;
+        }
+
+        .btn-secondary {
+            background: #10b981;
+            margin-top: 10px;
+        }
+
+        .btn-secondary:hover {
+            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.6);
+        }
+
+        .error {
+            background: #fee2e2;
+            border: 2px solid #ef4444;
+            color: #991b1b;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            display: none;
+        }
+
+        .error.show {
+            display: block;
+        }
+
+        .links {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .links a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .links a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="card">
+            <h1>🔐 Device Registration</h1>
+            <p class="subtitle">Register your IoT device and get an API key</p>
+
+            <form id="registrationForm">
+                <div class="form-group">
+                    <label for="deviceId">Device ID *</label>
+                    <input type="text" id="deviceId" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="deviceName">Device Name *</label>
+                    <input type="text" id="deviceName" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="category">Category *</label>
+                    <input type="text" id="category" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="branchId">Branch ID *</label>
+                    <input type="text" id="branchId" required>
+                </div>
+
+                <button type="submit" class="btn" id="submitBtn">Register Device</button>
+            </form>
+
+            <div class="error" id="errorMsg"></div>
+
+            <div class="result" id="result">
+                <h3>✅ Device Registered Successfully!</h3>
+
+                <div class="info-item">
+                    <span class="info-label">Device ID:</span>
+                    <span class="info-value" id="resultDeviceId"></span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Device Name:</span>
+                    <span class="info-value" id="resultDeviceName"></span>
+                </div>
+
+                <div style="margin-top: 20px;">
+                    <strong>Your API Key:</strong>
+                    <div class="api-key" id="apiKey"></div>
+                </div>
+
+                <div class="warning">
+                    ⚠️ <strong>Important:</strong> Save this API key immediately! It will only be shown once and cannot
+                    be retrieved later.
+                </div>
+
+                <button class="btn btn-secondary" onclick="copyApiKey()">📋 Copy API Key</button>
+                <button class="btn btn-secondary" onclick="goToDashboard()">📊 Go to Dashboard</button>
+            </div>
+
+            <div class="links">
+                <a href="/dashboard">← Back to Dashboard</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const form = document.getElementById('registrationForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const resultDiv = document.getElementById('result');
+        const errorDiv = document.getElementById('errorMsg');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const deviceId = document.getElementById('deviceId').value;
+            const deviceName = document.getElementById('deviceName').value;
+            const category = document.getElementById('category').value;
+            const branchId = document.getElementById('branchId').value;
+
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Registering...';
+            errorDiv.classList.remove('show');
+            resultDiv.classList.remove('show');
+
+            try {
+                const response = await fetch(`/api/v1/devices/register?device_id=${encodeURIComponent(deviceId)}&device_name=${encodeURIComponent(deviceName)}&category=${encodeURIComponent(category)}&branch_id=${encodeURIComponent(branchId)}`, {
+                    method: 'POST'
+                });
+
+                if (!response.ok) {
+                    const error = await response.json();
+                    throw new Error(error.detail || 'Registration failed');
+                }
+
+                const data = await response.json();
+
+                // Show result
+                document.getElementById('resultDeviceId').textContent = data.device_id;
+                document.getElementById('resultDeviceName').textContent = deviceName;
+                document.getElementById('apiKey').textContent = data.api_key;
+                resultDiv.classList.add('show');
+
+                // Store for dashboard redirect
+                window.registrationData = {
+                    device_id: data.device_id,
+                    device_name: deviceName,
+                    category: category,
+                    api_key: data.api_key
+                };
+
+                // Hide form
+                form.style.display = 'none';
+
+            } catch (error) {
+                errorDiv.textContent = `Error: ${error.message}`;
+                errorDiv.classList.add('show');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Register Device';
+            }
+        });
+
+        function copyApiKey() {
+            const apiKey = document.getElementById('apiKey').textContent;
+            navigator.clipboard.writeText(apiKey).then(() => {
+                alert('API Key copied to clipboard!');
+            });
+        }
+
+        function goToDashboard() {
+            const data = window.registrationData;
+            const params = new URLSearchParams({
+                device_id: data.device_id,
+                device_name: data.device_name,
+                category: data.category,
+                app_id: 'sensor_app',
+                api_key: data.api_key
+            });
+            window.location.href = `/dashboard?${params.toString()}`;
+        }
+    </script>
+</body>
+
+</html>

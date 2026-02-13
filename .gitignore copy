@@ -1,0 +1,27 @@
+# ===== Python =====
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# ===== Virtual Environments =====
+venv/
+.env/
+.env.*
+
+# ===== Editor / OS =====
+.vscode/
+.idea/
+.DS_Store
+
+# ===== Logs =====
+*.log
+
+# ===== Mongo / DB =====
+*.db
+
+# ===== Pyenv =====
+pyenv.cfg
+
+# ===== Misc =====
+.cache/

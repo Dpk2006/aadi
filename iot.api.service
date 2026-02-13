@@ -1,0 +1,15 @@
+[Unit]
+Description=Iot Device Api sever
+After=network.target
+
+[Service]
+Type=simple
+User=iot
+WorkingDirectory=/home/iot/server
+Enviroment="PATH=/home/iot/server/venv/bin"
+ExecStart=/home/iot/server/venv/bin/uvicorn app.main:app --host 0.0.0.0 --port 8000 --workers 4
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target

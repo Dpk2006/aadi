@@ -1,0 +1,17 @@
+# 1. Send some data (use YOUR registered name "kutta", not "meow")
+curl -X POST "http://localhost:8000/api/v1/logs/mm/kutta" \
+  -H "X-API-Key: sk_device_y1D2i0OqHtiM75Q-H9-hQxdXeZZ7KWNHL7BhVGO9He0" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "data": {
+      "temperature": 25.5,
+      "humidity": 60.2
+    }
+  }'
+# 2. Then retrieve it
+curl "http://localhost:8000/api/v1/logs/mm/kutta?mode=latest" \
+  -H "X-API-Key: sk_device_y1D2i0OqHtiM75Q-H9-hQxdXeZZ7KWNHL7BhVGO9He0"
+# 3. Download CSV
+curl "http://localhost:8000/api/v1/logs/mm/kutta?mode=csv" \
+  -H "X-API-Key: sk_device_y1D2i0OqHtiM75Q-H9-hQxdXeZZ7KWNHL7BhVGO9He0" \
+  -o kutta_data.csv
